@@ -1,188 +1,293 @@
-body[data-page="page"] {
+      & #left-sidebar li[title="Multi-Random-Note-Plugin"] {
+            display: none;
+      }
 
+      body[data-page="page"] {
 
-      &>div#root>div>main div#main-content-container div.page {
+            &>div#root>div>main div#main-content-container div.page {
 
-            /* breadcrumbの操作を禁止 (ページ操作を無効化するためにブロックとして開いている) */
-            &:has(div[id="multi random note"]) div.breadcrumb>a {
-                  cursor: default;
-
-                  & a.page-ref {
-                        pointer-events: none;
-                  }
-            }
-
-            & div[id="multi random note"]>div.content>div.blocks-container>div>div>div.ls-block>div.block-children-container>div.block-children>div.ls-block {
-                  overscroll-behavior-y: contain;
-                  outline: 2px solid var(--ls-border-color);
-                  outline-offset: 1px;
-                  overflow: auto;
-                  background-color: var(--ls-primary-background-color);
-
-                  &:has(div.embed-page>div.blocks-container) {
-                        &:focus-within,
-                        &:hover {
-                              box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
-                        }
+                  & #mrn--pagebar>button {
+                        margin-left: 10px;
+                        font-size: 20px;
+                        color: var(--lx-accent-11, var(--ls-link-text-color, hsl(var(--primary)/.8)))
                   }
 
-                  &>div.block-main-container {
+                  &:has([id="multi-random-note-plugin"]) {
 
-                        &>div.block-control-wrap {
+                        &>div:not(.relative) {
                               display: none;
                         }
 
-                        &>div.block-content-wrapper {
-                              width: 100%;
+                        & h1.page-title {
+                              cursor: default;
+                              pointer-events: none;
 
-                              &>div>div>div.block-content>div.block-content-inner>div>span.inline>div.embed-page {
-                                    background-color: var(--ls-primary-background-color);
-                                    width: max-content;
-                                    min-width: 100%;
-
-                                    &:not(:has(>section+div.blocks-container)) {
-                                          background: repeating-linear-gradient(45deg, var(--ls-secondary-background-color), transparent 100px);
-                                    }
-
-                                    &>section.embed-header {
-                                          position: sticky;
-                                          top: 0;
-                                          background-color: var(--ls-tertiary-background-color);
-                                          z-index: 1;
-                                          width: fit-content;
-                                    }
-
-                                    &>div.blocks-container {
-                                          font-size: .94em;
-                                    }
-                              }
-                        }
-                  }
-            }
-      }
-
-      /* Normal */
-      &.mrn-Normal>div#root>div>main div#main-content-container div.page:has(div[id="multi random note"]) div.breadcrumb a.page-ref::after {
-            content: "(Normal)";
-            text-decoration: underline;
-            margin-left: 1em;
-      }
-
-      /* Wide */
-      &.mrn-Wide>div#root>div>main div#main-content-container {
-
-            /* ページコンテンツ幅を最大化 */
-            &>div.cp__sidebar-main-content:has(#mrn-changeStyle) {
-                  max-width: 90vw;
-                  height: 90vh;
-                  /* ここでoverflowは使ってはいけない。横スクロールされなくなる */
-            }
-
-            & div.page {
-
-                  & div[id="multi random note"]>div.content>div.blocks-container>div>div>div.ls-block>div.block-children-container>div.block-children {
-                        display: -webkit-box;
-                        margin-right: 5vw;
-                        min-height: 60vh;
-                        max-height: 86vh;
-
-                        &>div.ls-block {
-                              min-width: 500px;
-                              max-width: 900px;
-                              flex: 1;
-
-                              &:has(div.embed-page>div.blocks-container) {
-
-                                    &:focus-within,
-                                    &:hover {
-                                          min-width: 900px;
-                                    }
-                              }
-                              &:not(:has(div.embed-page>div.blocks-container)){
-                                    overflow: hidden;
-                                    white-space: nowrap;
-                                    text-overflow: ellipsis;
-                                    min-width: fit-content;
+                              &::after {
+                                    text-decoration: underline;
+                                    margin-right: 0.5em;
+                                    font-size: small;
+                                    width: 10em;
                               }
                         }
                   }
 
-                  &:has(div[id="multi random note"]) div.breadcrumb a.page-ref {
-                        color: chocolate;
-                        /* 動作確認用 */
+                  & [id="multi-random-note-plugin"]>div.content>div.blocks-container>div>div>div.ls-block>div.block-children-container>div.block-children>div.ls-block {
+                        overscroll-behavior-y: contain;
+                        outline: 2px solid var(--ls-border-color);
+                        outline-offset: 1px;
+                        overflow: auto;
+                        background-color: var(--ls-primary-background-color);
 
-                        &::after {
-                              content: "(Wide)";
-                              text-decoration: underline;
-                              margin-left: 1em;
+                        &:is(:focus-within, :hover) {
+                              box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
                         }
-                  }
-            }
-      }
 
-      /* Gallery */
-      &.mrn-Gallery>div#root>div>main div#main-content-container {
+                        & div.ls-block[data-refs-self*='".thisweek"'] {
+                              position: unset !important;
+                        }
 
-            /* ページコンテンツ幅を最大化 */
-            &>div.cp__sidebar-main-content:has(#mrn-changeStyle) {
-                  max-width: 90vw;
-                  height: 90vh;
-            }
+                        &>div.block-main-container {
 
-            & div.page {
-
-                  & div[id="multi random note"]>div.content>div.blocks-container>div>div>div>div.block-children-container>div.block-children {
-                        display: grid;
-                        grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-                        margin-right: 5vw;
-                        max-height: 80vh;
-
-                        &>div.ls-block {
-                              width: 500px;
-                              flex: 1;
-                              height: 40vh;
-
-                              &:has(div.embed-page>div.blocks-container) {
-
-                                    &:focus-within,
-                                    &:hover {
-                                          width: 1100px;
-                                          height: 50vh;
-                                          margin-bottom: -10vh;
-                                          position: relative;
-                                          z-index: 2;
-                                    }
+                              &>div.block-control-wrap {
+                                    display: none;
                               }
 
-                              /* 縦の長さを合わせる場合 */
-                              &>div.block-main-container {
-                                    height: 100%;
+                              &>div.block-content-wrapper {
+                                    width: 100%;
 
-                                    &>div.block-content-wrapper>div.flex {
-                                          height: 100%;
+                                    &>div>div>div.block-content {
+                                          pointer-events: none;
 
-                                          &>div>div.block-content>div.block-content-inner {
-                                                height: 100%;
+                                          &>div.block-content-inner>div>span.inline {
+                                                &>div:is(.embed-page, .dsl-query) {
+                                                      width: fit-content;
+                                                      min-width: 100%;
+                                                      min-height: 300px;
+                                                      pointer-events: all;
 
-                                                &>div>span>div.embed-page {
-                                                      height: 100%;
+                                                      &:not(:has(>section+div.blocks-container)) {
+                                                            background: repeating-linear-gradient(45deg, var(--ls-secondary-background-color), transparent 100px);
+                                                      }
+
+                                                      &>section.embed-header {
+                                                            position: sticky;
+                                                            top: 0;
+                                                            background-color: var(--ls-tertiary-background-color);
+                                                            z-index: 1;
+                                                            width: fit-content;
+                                                      }
+
+                                                      &>div.blocks-container {
+                                                            font-size: .94em;
+                                                      }
+
+                                                }
+
+                                                &>div.dsl-query>div>div>div>div.custom-query {
+                                                      opacity: 0.9;
+                                                      font-size: 0.8em;
+                                                      overflow: auto;
+                                                      width: max-content;
+                                                      pointer-events: all;
+
+                                                      &>div.th {
+                                                            display: none;
+                                                      }
+
+                                                      &>div.cp__query-builder {
+                                                            user-select: none;
+                                                            pointer-events: none;
+
+                                                            &>div.cp__query-builder-filter>div.ui__dropdown-trigger {
+                                                                  display: none;
+                                                            }
+                                                      }
                                                 }
                                           }
                                     }
                               }
                         }
                   }
+            }
 
-                  &:has(div[id="multi random note"]) div.breadcrumb a.page-ref {
-                        color: red;
-                        /* 動作確認用 */
+            /* Expansion */
+            &.mrn-Expansion>div#root>div>main div#main-content-container div.page:has([id="multi-random-note-plugin"]) h1.page-title::after {
+                  content: "Expansion";
+            }
 
-                        &::after {
-                              content: "(Gallery)";
-                              text-decoration: underline;
-                              margin-left: 1em;
+            /* Wide */
+            &.mrn-Wide>div#root>div>main div#main-content-container {
+
+                  /* ページコンテンツ幅を最大化 */
+                  &>div.cp__sidebar-main-content:has([id="multi-random-note-plugin"]) {
+                        max-width: 90vw;
+                        height: 90vh;
+                        /* ここでoverflowは使ってはいけない。横スクロールされなくなる */
+                  }
+
+                  & div.page {
+
+                        & [id="multi-random-note-plugin"]>div.content>div.blocks-container>div>div>div.ls-block>div.block-children-container>div.block-children {
+                              display: flex;
+                              margin-right: 5vw;
+                              min-height: 60vh;
+                              max-height: 86vh;
+
+                              &>div.ls-block {
+                                    min-width: 500px;
+                                    max-width: 900px;
+                                    flex: 1;
+
+                                    &:not(:focus-within, :hover) {
+                                          opacity: 0.8;
+                                    }
+
+                                    &:is(:focus-within, :hover) {
+                                          min-width: 900px;
+                                          opacity: 1;
+                                    }
+
+                                    &:not(:has(div.embed-page>div.blocks-container)) {
+                                          overflow: hidden;
+                                          white-space: nowrap;
+                                          text-overflow: ellipsis;
+                                          min-width: fit-content;
+                                    }
+                              }
+                        }
+
+                        &:has([id="multi-random-note-plugin"]) h1.page-title {
+                              color: chocolate;
+                              /* 動作確認用 */
+
+                              &::after {
+                                    content: "Wide";
+                              }
+                        }
+                  }
+            }
+
+            /* Gallery */
+            &.mrn-Gallery>div#root>div>main div#main-content-container {
+
+                  /* ページコンテンツ幅を最大化 */
+                  &>div.cp__sidebar-main-content:has([id="multi-random-note-plugin"]) {
+                        max-width: 90vw;
+                        height: 90vh;
+                  }
+
+                  & div.page {
+
+                        & [id="multi-random-note-plugin"]>div.content>div.blocks-container>div>div>div>div.block-children-container>div.block-children {
+                              display: grid;
+                              grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+                              margin-right: 5vw;
+                              max-height: 80vh;
+
+                              &>div.ls-block {
+                                    width: 500px;
+                                    flex: 1;
+                                    height: 40vh;
+
+                                    &:not(:focus-within, :hover) {
+                                          opacity: 0.8;
+                                    }
+
+                                    &:is(:focus-within, :hover) {
+                                          width: 800px;
+                                          height: 50vh;
+                                          margin-bottom: -10vh;
+                                          position: relative;
+                                          z-index: 2;
+                                          opacity: 1;
+                                    }
+
+                                    /* 縦の長さを合わせる場合 */
+                                    &>div.block-main-container {
+                                          height: 100%;
+
+                                          &>div.block-content-wrapper>div.flex {
+                                                height: 100%;
+
+                                                &>div>div.block-content>div.block-content-inner>div>span>div.embed-page {
+                                                      height: 100%;
+                                                }
+                                          }
+                                    }
+                              }
+                        }
+
+                        &:has([id="multi-random-note-plugin"]) h1.page-title {
+                              color: yellowgreen;
+                              /* 動作確認用 */
+
+                              &::after {
+                                    content: "Gallery";
+                              }
+                        }
+                  }
+            }
+
+            /* Tile */
+            &.mrn-Tile>div#root>div>main div#main-content-container {
+
+                  /* ページコンテンツ幅を最大化 */
+                  &>div.cp__sidebar-main-content:has([id="multi-random-note-plugin"]) {
+                        max-width: 90vw;
+                        height: 90vh;
+                  }
+
+                  & div.page {
+
+                        & [id="multi-random-note-plugin"]>div.content>div.blocks-container>div>div>div>div.block-children-container>div.block-children {
+                              display: grid;
+                              grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                              margin-right: 2vw;
+                              max-height: 90vh;
+
+                              &>div.ls-block {
+                                    width: 250px;
+                                    flex: 1;
+                                    height: 300px;
+                                    overflow: auto;
+
+                                    &:not(:focus-within, :hover) {
+                                          font-size: 0.8em;
+                                          opacity: 0.8;
+                                    }
+
+                                    &:is(:focus-within, :hover) {
+                                          width: 400px;
+                                          height: 450px;
+                                          margin-bottom: -10vh;
+                                          position: relative;
+                                          z-index: 2;
+                                          opacity: 1;
+                                    }
+
+                                    /* 縦の長さを合わせる場合 */
+                                    &>div.block-main-container {
+                                          height: 100%;
+
+                                          &>div.block-content-wrapper>div.flex {
+                                                height: 100%;
+
+                                                &>div>div.block-content>div.block-content-inner>div>span>div.embed-page {
+                                                      height: 100%;
+                                                }
+                                          }
+                                    }
+                              }
+                        }
+
+                        &:has([id="multi-random-note-plugin"]) h1.page-title {
+                              color: lightseagreen;
+                              /* 動作確認用 */
+
+                              &::after {
+                                    content: "Tile";
+                              }
                         }
                   }
             }
       }
-}

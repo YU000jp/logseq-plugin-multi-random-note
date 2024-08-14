@@ -1,6 +1,6 @@
 {
     "name": "logseq-plugin-multi-random-note",
-    "description": "",
+    "description": "Lists randomly selected pages or assets",
     "repository": "https://github.com/YU000jp/logseq-plugin-multi-random-note.git",
     "author": "YU000jp",
     "license": "MIT",
