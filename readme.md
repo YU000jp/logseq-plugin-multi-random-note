@@ -5,14 +5,15 @@
 
 - Not published yet 👷🚧
   > [Release](https://github.com/YU000jp/logseq-plugin-multi-random-note/releases) information is on the right. Load files at developer mode.
+<div align="right">
 
-[![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-multi-random-note)](https://github.com/YU000jp/logseq-plugin-multi-random-note/releases)
-[![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-multi-random-note/total.svg)](https://github.com/YU000jp/logseq-plugin-multi-random-note/releases)
-<!-- Published 2023 -->
+[![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-multi-random-note)](https://github.com/YU000jp/logseq-plugin-multi-random-note/releases)[![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-multi-random-note/total.svg)](https://github.com/YU000jp/logseq-plugin-multi-random-note/releases)<!-- Published 2023 --><a href="https://www.buymeacoffee.com/yu000japan"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a pizza&emoji=🍕&slug=yu000japan&button_colour=FFDD00&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff" /></a>
+</div>
 
 ## Feature
 
-It can be customized in several sizes and styles to display multiple page content.
+- It can be customized in several sizes and styles to display multiple page content.
+  > ![Randomプラグイン](https://github.com/user-attachments/assets/ea0de8b8-4b77-490e-8b80-56442192ec8f)
 
 ---
 
@@ -24,7 +25,10 @@ It can be customized in several sizes and styles to display multiple page conten
 
 ### Usage
 
+
 - A new header item is added to the left menu of Logseq. Click on it to access a dedicated plugin page.
+  > ![image](https://github.com/user-attachments/assets/5e263800-73ee-4527-a4c2-8851e0d07e27)
+
 - On the page, there is a menu in the top right-hand corner: press Pages or Assets and a new random extraction will be made for each. Press the 🎨 button to switch between display styles.
   > It is possible to change the number of pages displayed and set pages to be excluded in the plugin settings.
 
@@ -50,5 +54,3 @@ Logseq Plugin > [@TankCool/ Random Note](https://github.com/tankcool/logseq-rand
 Icon > [icooon-mono.com](https://icooon-mono.com/00108-%e3%83%80%e3%83%bc%e3%83%84%e3%81%ae%e7%9f%a2%e3%81%ae%e3%82%a2%e3%82%a4%e3%82%b3%e3%83%b3%e7%b4%a0%e6%9d%90/)
 
 Author > [@YU000jp](https://github.com/YU000jp)
-
-<a href="https://www.buymeacoffee.com/yu000japan"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a pizza&emoji=🍕&slug=yu000japan&button_colour=FFDD00&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff" /></a>
