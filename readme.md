@@ -3,9 +3,6 @@
 - Lists randomly selected pages or assets
   > This plugin is based on [Random Note plugin](https://github.com/tankcool/logseq-random-note) produced by [@TankCool](https://github.com/tankcool/).
 
-- Not published yet 👷🚧
-  > [Release](https://github.com/YU000jp/logseq-plugin-multi-random-note/releases) information is on the right. Load files at developer mode.
-
 > [!WARNING]
 This plugin does not work with Logseq db version.
 
@@ -23,7 +20,7 @@ This plugin does not work with Logseq db version.
 
 ## Getting Started
 
-### Install from Logseq Marketplace (Coming👷🚧)
+### Install from Logseq Marketplace
 
 - Press [`---`] on the top right toolbar to open [`Plugins`]. Select marketplace. Type `Random` in the search field, select it from the search results and install
 
