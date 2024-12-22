@@ -61,7 +61,7 @@ const main = async () => {
       }
       div.page:has([id="${t(mainPageTitleLower)}"]) #${keyPageBarId} {
         display: block;
-      }✖
+      }
       </style>
       `,
   })
