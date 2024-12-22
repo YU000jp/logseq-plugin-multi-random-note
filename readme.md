@@ -24,8 +24,9 @@ This plugin does not work with Logseq db version.
 
 - Press [`---`] on the top right toolbar to open [`Plugins`]. Select marketplace. Type `Random` in the search field, select it from the search results and install
 
-### Usage
+  ![image](https://github.com/user-attachments/assets/56b723b2-7c51-4b13-87b7-51c652df734e)
 
+### Usage
 
 - A new header item is added to the left menu of Logseq. Click on it to access a dedicated plugin page.
   > ![image](https://github.com/user-attachments/assets/5e263800-73ee-4527-a4c2-8851e0d07e27)
