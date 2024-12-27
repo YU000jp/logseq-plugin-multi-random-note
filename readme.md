@@ -22,7 +22,7 @@ This plugin does not work with Logseq db version.
 
 ### Install from Logseq Marketplace
 
-- Press [`---`] on the top right toolbar to open [`Plugins`]. Select marketplace. Type `Random` in the search field, select it from the search results and install
+- Press [`---`] on the top right toolbar to open [`Plugins`]. Select marketplace. Type `Multi` in the search field, select it from the search results and install
 
   ![image](https://github.com/user-attachments/assets/56b723b2-7c51-4b13-87b7-51c652df734e)
 
