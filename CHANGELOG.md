@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/YU000jp/logseq-plugin-multi-random-note/compare/v1.1.0...v1.1.1) (2024-12-28)
+
+
+### Bug Fixes
+
+* **bug:** remove the menu when plugin-off ([f58908c](https://github.com/YU000jp/logseq-plugin-multi-random-note/commit/f58908c7db05721447d2bab0bb0daf88d7c642df))
+
 # [1.1.0](https://github.com/YU000jp/logseq-plugin-multi-random-note/compare/v1.0.0...v1.1.0) (2024-12-22)
 
 
