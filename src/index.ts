@@ -1,6 +1,6 @@
-import '@logseq/libs'; //https://plugins-doc.logseq.com/
+import '@logseq/libs' //https://plugins-doc.logseq.com/
 import { BlockEntity, LSPluginBaseInfo, PageEntity } from '@logseq/libs/dist/LSPlugin.user'
-import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
+import { setup as l10nSetup, t } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
 import { generateEmbed, generateEmbedForAssets } from './embed/generateBlock'
 import { addLeftMenuNavHeader, clearEle } from './embed/lib'
 import cssMain from './main.css?inline'
@@ -212,7 +212,7 @@ const main = async () => {
   logseq.beforeunload(async () => {
     if (logseq.settings![keySettingsPageStyle])
       parent.document.body.classList.remove(`${shortKey}-${logseq.settings![keySettingsPageStyle]}`)
-
+    clearEle(`${shortKey}--nav-header`)
   })
 
 
