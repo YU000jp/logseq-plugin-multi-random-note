@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/YU000jp/logseq-plugin-multi-random-note/compare/v1.1.1...v1.1.2) (2025-01-02)
+
+
+### Bug Fixes
+
+* refactor ([6e65dbe](https://github.com/YU000jp/logseq-plugin-multi-random-note/commit/6e65dbe3de0af5a333576c43f82ac101fbc23c49))
+
 ## [1.1.1](https://github.com/YU000jp/logseq-plugin-multi-random-note/compare/v1.1.0...v1.1.1) (2024-12-28)
 
 
