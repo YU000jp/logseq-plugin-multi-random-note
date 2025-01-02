@@ -74,13 +74,3 @@ export const getQueryScript = (): string => {
       return defaultQuery
   }
 }
-
-
-export const getQueryScriptForAssets = (key:string): string => {
-  return `
-            [:find (pull ?p [*])
-              :where
-              [_ :block/page ?p]
-              [?p :block/journal? false]]
-        `
-}

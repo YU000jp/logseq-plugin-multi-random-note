@@ -1,5 +1,4 @@
 import { PageEntity } from "@logseq/libs/dist/LSPlugin.user"
-import { mainPageTitle } from ".."
 
 
 export interface pageEntityShort {
