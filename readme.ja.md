@@ -49,6 +49,9 @@
   1. 左メニューの代わりに、ツールバーボタンからもアクセスできます。
 1. このプラグインにはまだ改善の余地があります。問題が発生した場合や改善のアイデアがある場合はお知らせください。
 1. このプラグインはLogseqのDOM（Document Object Model）構造に依存しています。LogseqのバージョンアップデートによりDOM構造が変更された場合、スタイルが適用されないことがあります。CSSを調整して対応します。何か気づいたことがあれば、問題を提起してください。
+1. 関連プラグイン
+   1. [Logging Search](https://github.com/YU000jp/logseq-plugin-logging-search)
+   1. [Draft Notes](https://github.com/YU000jp/logseq-plugin-draft-notes)
 
 ## 先行技術とクレジット
 
