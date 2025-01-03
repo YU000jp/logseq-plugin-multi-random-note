@@ -49,6 +49,9 @@ This plugin does not work with Logseq db version.
   1. Instead of the left menu, it can also be accessed via a toolbar button.
 1. This plugin still has room for improvement. Please let me know if you encounter any issues or have any ideas for enhancement.
 1. This plugin relies on Logseq's DOM (Document Object Model) structure. If the DOM structure changes due to a Logseq version update, styles may not be applied. We will adjust the CSS to deal with it. If you notice something, please raise an issue.
+1. Related plugins
+   1. [Logging Search](https://github.com/YU000jp/logseq-plugin-logging-search)
+   1. [Draft Notes](https://github.com/YU000jp/logseq-plugin-draft-notes)
 
 ## Prior art & Credit
 
