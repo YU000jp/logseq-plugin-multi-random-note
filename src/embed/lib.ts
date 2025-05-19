@@ -42,7 +42,7 @@ export const addLeftMenuNavHeader = (divId: string, icon: string, title: string,
   try {
     clearEle(divId)
   } finally {
-    const leftSidebarElement = parent.document.querySelector("#left-sidebar div.nav-header") as HTMLElement | null
+    const leftSidebarElement = parent.document.querySelector("#left-sidebar div:is(.nav-header ,.sidebar-navigations)") as HTMLElement | null
     if (leftSidebarElement) {
       const div = document.createElement("div")
       div.id = divId
