@@ -4,7 +4,7 @@
   > This plugin is based on [Random Note plugin](https://github.com/tankcool/logseq-random-note) produced by [@TankCool](https://github.com/tankcool/).
 
 > [!WARNING]
-This plugin does not work with Logseq db version.
+This plugin does not work with the DB graph.
 
 <div align="right">
 

@@ -4,7 +4,7 @@
   > このプラグインは[@TankCool](https://github.com/tankcool/)が制作した[Random Note plugin](https://github.com/tankcool/logseq-random-note)に基づいています。
 
 > [!WARNING]
-このプラグインはLogseqのdbバージョンでは動作しません。
+このプラグインはDBグラフでは動作しません。
 
 <div align="right">
 
