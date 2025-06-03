@@ -3,7 +3,7 @@ import { t } from "logseq-l10n"
 import { pageEntityShort } from "./lib"
 
 
-export const getPageEntities = async (query: string): Promise<pageEntityShort | null> => {
+export const getPageEntities = async (query: string, logseqVersionMd: boolean): Promise<pageEntityShort | null> => {
   try {
     const pageEntities = (await logseq.DB.datascriptQuery(query) as any)?.flat()
     for (let i = 0; i < pageEntities.length; i++) {
@@ -21,21 +21,21 @@ export const getPageEntities = async (query: string): Promise<pageEntityShort | 
 }
 
 
-export const getQueryScript = (): string => {
+export const getQueryScript = (logseqVersionMd: boolean): string => {
   const defaultQuery = `
-      [:find (pull ?p [*])
+      [:find (pull ?p [:block/name :block/uuid])
         :where
         [_ :block/page ?p]]`
   switch (logseq.settings!.randomMode as string) {
     case "page":
-      if (logseq.settings!.includeJournals as boolean) {
+      if (logseq.settings!.includeJournals as boolean || logseqVersionMd === false) {
         return `
-            [:find (pull ?p [*])
+            [:find (pull ?p [:block/name :block/uuid])
               :where
               [_ :block/page ?p]]`
       } else {
         return `
-            [:find (pull ?p [*])
+            [:find (pull ?p [:block/name :block/uuid])
               :where
               [_ :block/page ?p]
               [?p :block/journal? false]]`
@@ -48,7 +48,7 @@ export const getQueryScript = (): string => {
         logseq.UI.showMsg("Random tags are required.", "warning")
       return (
         `
-          [:find (pull ?b [*])
+          [:find (pull ?b [:block/name :block/uuid])
             :where
             [?b :block/refs ?bp]
             [?bp :block/name ?name]
@@ -59,7 +59,7 @@ export const getQueryScript = (): string => {
       )
     case "card":
       return `
-            [:find (pull ?b [*])
+            [:find (pull ?b [:block/name :block/uuid])
               :where
               [?b :block/refs ?bp]
               [?bp :block/name ?name]

@@ -43,7 +43,7 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
         type: "boolean",
         default: false,
         title: t("Include Journals?"),
-        description: "",
+        description: "⚠️ Not supports with Logseq DB model",
     },
     {
         key: "randomTags",
@@ -64,7 +64,7 @@ export const settingsTemplate = (): SettingSchemaDesc[] => [
         description:
             `
           ${t("Custom query")}
-          ${t("e.g.")} [:find (pull ?b [*]) :where [?b :block/refs ?bp] [?bp :block/name "book"]]
+          ${t("e.g.")} [:find (pull ?b [:block/name :block/uuid]) :where [?b :block/refs ?bp] [?bp :block/name "book"]]
           `,
     },
     {

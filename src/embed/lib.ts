@@ -1,36 +1,38 @@
 import { PageEntity } from "@logseq/libs/dist/LSPlugin.user"
+import { loadOrInitializePage } from ".."
 
 
 export interface pageEntityShort {
   name: PageEntity["name"]
   uuid: PageEntity["uuid"]
-  originalName: PageEntity["originalName"]
 }
 []
 
 
 export const isPageExcluded = (pageName: string) => {
+  const pageNameLower = pageName.toLowerCase()
+
   if (logseq.settings!.excludesPages as string !== ""
-    && ((logseq.settings!.excludesPages as string) === pageName
-      || (logseq.settings!.excludesPages as string).split("\n").some((v: string) => v === pageName)))
+    && ((logseq.settings!.excludesPages as string).toLowerCase() === pageNameLower
+      || (logseq.settings!.excludesPages as string).split("\n").some((v: string) => v.toLowerCase() === pageNameLower)))
     return true
 
   else if (logseq.settings!.excludesPagesStartWith as string !== ""
-    && ((logseq.settings!.excludesPagesStartWith as string) === pageName
+    && ((logseq.settings!.excludesPagesStartWith as string).toLowerCase() === pageNameLower
       || ((logseq.settings!.excludesPagesStartWith as string).includes("\n")
-        && (logseq.settings!.excludesPagesStartWith as string).split("\n").some((v: string) => pageName.startsWith(v)))))
+        && (logseq.settings!.excludesPagesStartWith as string).split("\n").some((v: string) => pageNameLower.startsWith(v.toLowerCase())))))
     return true
 
   else if (logseq.settings!.excludesPagesContain as string !== ""
-    && ((logseq.settings!.excludesPagesContain as string) === pageName
+    && ((logseq.settings!.excludesPagesContain as string).toLowerCase() === pageNameLower
       || ((logseq.settings!.excludesPagesContain as string).includes("\n")
-        && (logseq.settings!.excludesPagesContain as string).split("\n").some((v: string) => pageName.includes(v)))))
+        && (logseq.settings!.excludesPagesContain as string).split("\n").some((v: string) => pageNameLower.includes(v.toLowerCase())))))
     return true
 
   else if (logseq.settings!.excludesPagesRegex as string !== ""
-    && ((logseq.settings!.excludesPagesRegex as string) === pageName
+    && ((logseq.settings!.excludesPagesRegex as string).toLowerCase() === pageNameLower
       || ((logseq.settings!.excludesPagesRegex as string).includes("\n")
-        && (logseq.settings!.excludesPagesRegex as string).split("\n").some((v: string) => new RegExp(v).test(pageName)))))
+        && (logseq.settings!.excludesPagesRegex as string).split("\n").some((v: string) => new RegExp(v, 'i').test(pageName)))))
     return true
 
   else
@@ -38,7 +40,7 @@ export const isPageExcluded = (pageName: string) => {
 }
 
 
-export const addLeftMenuNavHeader = (divId: string, icon: string, title: string, goPageName: string) => {
+export const addLeftMenuNavHeader = (divId: string, icon: string, title: string, goPageName: string, logseqDbGraph: boolean) => {
   try {
     clearEle(divId)
   } finally {
@@ -50,8 +52,9 @@ export const addLeftMenuNavHeader = (divId: string, icon: string, title: string,
 
       const anchor = document.createElement("a")
       anchor.className = "item group flex items-center text-sm font-medium rounded-md"
-      anchor.addEventListener("click", () => logseq.App.pushState('page', { name: goPageName }) // ページを開く
-      )
+      anchor.addEventListener("click", () => {
+        loadOrInitializePage(goPageName, logseqDbGraph)
+      })
       div.appendChild(anchor)
 
       const spanIcon = document.createElement("span")

@@ -6,9 +6,9 @@ import { getPageEntities, getQueryScript } from "./random"
 
 
 let beforeArray: string[] = []
-export const generateEmbed = async (firstBlockUuid: string) => {
+export const generateEmbed = async (firstBlockUuid: string, logseqVersionMd: boolean) => {
 
-  const pageEntities = await getPageEntities(getQueryScript()) as pageEntityShort[] | null
+  const pageEntities = await getPageEntities(getQueryScript(logseqVersionMd), logseqVersionMd) as pageEntityShort[] | null
   if (pageEntities) {
     const batch: IBatchBlock[] = []
     // // 重複を取り除く
@@ -16,7 +16,7 @@ export const generateEmbed = async (firstBlockUuid: string) => {
       index === self.findIndex((e) => (
         e["uuid"]
         && e["uuid"] === element["uuid"] // uuidが一致するものを取り除く
-        && isPageExcluded(e.originalName) === false // 除外リスト
+        && isPageExcluded((e.name)) === false // 除外リスト
       )))
 
     for (const pageEntity of (((pageEntities.filter((page) =>
@@ -48,6 +48,9 @@ export const generateEmbed = async (firstBlockUuid: string) => {
     logseq.UI.showMsg(t("Maybe something wrong with the query"), "warning", { timeout: 2200 })
     console.warn("Failed query")
   }
+
+  // 100ms待機
+  await new Promise(resolve => setTimeout(resolve, 100))
   // ブロックの編集モードを終了
   await logseq.Editor.exitEditingMode()
 }
@@ -56,7 +59,7 @@ export const generateEmbed = async (firstBlockUuid: string) => {
 
 let beforeArrayAssets: string[] = []
 
-export const generateEmbedForAssets = async (firstBlockUuid: string) => {
+export const generateEmbedForAssets = async (firstBlockUuid: string, logseqVersionMd: boolean) => {
 
 
   const assets = await logseq.Assets.listFilesOfCurrentGraph() as {
@@ -102,6 +105,9 @@ export const generateEmbedForAssets = async (firstBlockUuid: string) => {
     logseq.UI.showMsg(t("No found"), "warning", { timeout: 2200 })
     console.warn("Failed assets random")
   }
+
+  // 100ms待機
+  await new Promise(resolve => setTimeout(resolve, 100))
   // ブロックの編集モードを終了
   await logseq.Editor.exitEditingMode()
 }

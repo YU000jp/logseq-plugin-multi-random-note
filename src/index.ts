@@ -1,9 +1,10 @@
-import '@logseq/libs'; //https://plugins-doc.logseq.com/
-import { BlockEntity, LSPluginBaseInfo, PageEntity } from '@logseq/libs/dist/LSPlugin.user'
-import { setup as l10nSetup, t } from "logseq-l10n"; //https://github.com/sethyuan/logseq-l10n
+import '@logseq/libs' //https://plugins-doc.logseq.com/
+import { AppInfo, BlockEntity, LSPluginBaseInfo, PageEntity } from '@logseq/libs/dist/LSPlugin.user'
+import { setup as l10nSetup, t } from "logseq-l10n" //https://github.com/sethyuan/logseq-l10n
 import { generateEmbed, generateEmbedForAssets } from './embed/generateBlock'
 import { addLeftMenuNavHeader, clearEle } from './embed/lib'
 import cssMain from './main.css?inline'
+import cssMainDbModel from './mainDb.css?inline'
 import { keySettingsPageStyle, settingsTemplate, styleList } from './settings'
 import af from "./translations/af.json"
 import de from "./translations/de.json"
@@ -24,6 +25,7 @@ import tr from "./translations/tr.json"
 import uk from "./translations/uk.json"
 import zhCN from "./translations/zh-CN.json"
 import zhHant from "./translations/zh-Hant.json"
+import { getUuidFromPageName } from './advancedQuery'
 
 export const mainPageTitle = "Multi-Random-Note-Plugin" // メインページのタイトル
 export const mainPageTitleLower = mainPageTitle.toLowerCase()
@@ -38,10 +40,25 @@ const keyRunButton = `${shortKey}--run`
 const keyAssetsButton = `${shortKey}--assets`
 const keyCloseButton = `${shortKey}--close`
 const keyLeftMenu = `${shortKey}--nav-header`
+let logseqVersion: string = "" //バージョンチェック用
+let logseqVersionMd: boolean = false //バージョンチェック用
+let logseqDbGraph: boolean = false //DBグラフかどうかのフラグ
 
 
 /* main */
 const main = async () => {
+
+  // バージョンチェック
+  logseqVersionMd = await checkLogseqVersion()
+  // if (logseqVersionMd === false) {
+  //   // Logseq ver 0.10.*以下にしか対応していない
+  //   logseq.UI.showMsg("The Multi Random Note plugin only supports Logseq ver 0.10.* and below.", "warning", { timeout: 5000 })
+  //   return
+  // }
+  if (logseqVersionMd === false) {
+    logseqDbGraph = await checkLogseqDbGraph()
+    console.log(`${logseqDbGraph ? "DB Graph" : "MD Graph"} mode detected.`)
+  }
 
   // l10nのセットアップ
   await l10nSetup({
@@ -79,16 +96,26 @@ const main = async () => {
       #${keyPageBarId} {
         display: none;
       }
+      ${logseqVersionMd === true ? `
       div.page:has([id="${t(mainPageTitleLower)}"]) #${keyPageBarId} {
-        display: block;
+        display: block
       }
+      `: `
+      body:is([data-page="${t(mainPageTitle)}"], [data-page="${t(mainPageTitleLower)}"]) #${keyPageBarId} {
+        display: block
+      }
+  `}
       </style>
       `,
   })
 
+
+  // 300ms待機
+  await new Promise((resolve) => setTimeout(resolve, 300))
+
   // メニューバーのヘッダーに追加
   if (logseq.settings!.addLeftMenu === true)
-    addLeftMenuNavHeader(keyLeftMenu, toolbarIcon, keyToolbar, mainPageTitle)
+    addLeftMenuNavHeader(keyLeftMenu, toolbarIcon, keyToolbar, mainPageTitle, logseqDbGraph)
 
 
   let processingButton = false
@@ -99,20 +126,9 @@ const main = async () => {
     [keyToolbar]: async () => {
       if (processingButton) return
       processingButton = true
-      setTimeout(() => processingButton = false, 100)
+      setTimeout(() => processingButton = false, 1000)
 
-      const pageEntity = await logseq.Editor.getPage(mainPageTitle, { includeChildren: false }) as PageEntity | null
-      if (pageEntity) {
-        logseq.App.pushState('page', { name: mainPageTitle })// ページを開く
-      } else {
-        await logseq.Editor.createPage(mainPageTitle, { public: false }, { redirect: true, createFirstBlock: true, journal: false })
-        setTimeout(() => {
-          const runButton = parent.document.getElementById(keyRunButton) as HTMLElement | null
-          if (runButton)
-            runButton.click()
-        }, 300)
-      }
-      logseq.UI.showMsg(`${mainPageTitle}`, "info", { timeout: 2200 })
+      await loadOrInitializePage(mainPageTitle, logseqDbGraph)
     },
 
     // トグルボタンが押されたら
@@ -143,7 +159,7 @@ const main = async () => {
       setTimeout(() => processingButton = false, 100)
 
       // ページ内容の更新をおこなう
-      await updateMainContent("page")
+      await updateMainContent("page", logseqVersionMd, logseqDbGraph)
     },
 
     // アセットボタン
@@ -153,7 +169,7 @@ const main = async () => {
       setTimeout(() => processingButton = false, 100)
 
       // ページ内容の更新をおこなう
-      await updateMainContent("assets")
+      await updateMainContent("assets", logseqVersionMd, logseqDbGraph)
     },
 
     // 閉じるボタンが押されたら
@@ -168,12 +184,12 @@ const main = async () => {
   })
 
 
-  logseq.App.onRouteChanged(async ({ path, template }) => handleRouteChange(path, template))//ページ読み込み時に実行コールバック
+  logseq.App.onRouteChanged(async ({ path, template }) => handleRouteChange(path, template, logseqVersionMd))//ページ読み込み時に実行コールバック
   // logseq.App.onPageHeadActionsSlotted(async () => handleRouteChange())//Logseqのバグあり。動作保証が必要
 
 
   // CSSを追加
-  logseq.provideStyle({ style: cssMain, key: keyCssMain })
+  logseq.provideStyle({ style: logseqVersionMd === true ? cssMain : cssMainDbModel, key: keyCssMain })
 
 
   // プラグインが有効になったとき
@@ -198,7 +214,7 @@ const main = async () => {
       if (newSet.addLeftMenu === false)
         clearEle(`${shortKey}--nav-header`)
       else
-        addLeftMenuNavHeader(keyLeftMenu, toolbarIcon, keyToolbar, mainPageTitle)
+        addLeftMenuNavHeader(keyLeftMenu, toolbarIcon, keyToolbar, mainPageTitle, logseqDbGraph)
     }
 
   })
@@ -245,56 +261,111 @@ const pageMenuClickAddToExclusionList = async () => {
 }
 
 
-let now = false
+
 // ページを開いたとき
 let isProcessingRootChanged = false
-const handleRouteChange = async (path: string, template: string) => {
+const handleRouteChange = async (path: string, template: string, logseqVersionMd: boolean) => {
   if (template !== "/page/:name" //ページ以外は除外
     || isProcessingRootChanged) return
   isProcessingRootChanged = true
-  setTimeout(() => isProcessingRootChanged = false, 100)
+  setTimeout(() => isProcessingRootChanged = false, 300)
 
   const pageName = path.replace(/^\/page\//, "")
   if (pageName === mainPageTitle) {
-    now = true
-    await updateMainContent("page")
+    await updateMainContent("page", logseqVersionMd, logseqDbGraph)
+    isProcessingRootChanged = true
+    setTimeout(() => isProcessingRootChanged = false, 3000)
   } else
-    if (now = true) {
-      now = false
+    if (logseq.settings!.flagRemoveContent as boolean === true) {
+      logseq.updateSettings({ flagRemoveContent: false })
       // 必ずHomeに移動してしまうバグがあるためdeletePage()は使えないので、ブロックのみを削除
-      const blockEntities = await logseq.Editor.getPageBlocksTree(mainPageTitle) as BlockEntity[] | null
-      if (blockEntities) {
-        await logseq.Editor.updateBlock(blockEntities[0].uuid, "", {})
-        if (blockEntities[0]) {
-          const children = blockEntities[0].children as BlockEntity[] | undefined
-          if (children)
-            for (const child of children)
-              await logseq.Editor.removeBlock(child.uuid)
-        }
-      }
+      await deleteAllBlocks()
     }
 }
 
 
-const updateMainContent = async (type: "page" | "assets") => {
-  const blocks = await logseq.Editor.getCurrentPageBlocksTree() as { uuid: BlockEntity["uuid"] }[]
-  if (blocks) {
-    // 全てのブロックを削除
-    for (const block of blocks)
-      await logseq.Editor.removeBlock(block.uuid)
+const updateMainContent = async (type: "page" | "assets", logseqVersionMd: boolean, logseqDbGraph: boolean) => {
+  await deleteAllBlocks()
 
-    // メインページの最初のブロックを作成
+  // 100ms待機
+  await new Promise(resolve => setTimeout(resolve, 100))
+
+  // メインページの最初のブロックを作成
+  if (logseqDbGraph === true) {
     const newBlockEntity = await logseq.Editor.appendBlockInPage(mainPageTitle, "") as { uuid: BlockEntity["uuid"] } | null
-
     if (newBlockEntity)
       if (type === "page")
-        await generateEmbed(newBlockEntity.uuid)
+        await generateEmbed(newBlockEntity.uuid, logseqVersionMd)
       else
         if (type === "assets")
-          await generateEmbedForAssets(newBlockEntity.uuid)
+          await generateEmbedForAssets(newBlockEntity.uuid, logseqVersionMd)
+  } else {
+    const newBlockEntity = await logseq.Editor.appendBlockInPage(mainPageTitle, "") as { uuid: BlockEntity["uuid"] } | null
+    if (newBlockEntity)
+      if (type === "page")
+        await generateEmbed(newBlockEntity.uuid, logseqVersionMd)
+      else
+        if (type === "assets")
+          await generateEmbedForAssets(newBlockEntity.uuid, logseqVersionMd)
   }
+  logseq.updateSettings({ flagRemoveContent: true })
 }
 
 
-
 logseq.ready(main).catch(console.error)
+
+
+export const loadOrInitializePage = async (goPageName: string, logseqDbGraph: boolean) => {
+  const page = await getUuidFromPageName(goPageName, logseqVersionMd) as BlockEntity["uuid"] | null
+  if (page) {
+    if (logseqDbGraph === true) {
+      console.log(`DB Graph mode detected. Opening page: ${goPageName}`)
+      // DBグラフの場合は、ページを開く
+      logseq.App.replaceState('page', { name: goPageName })
+    } else {
+      // MDグラフの場合は、ページを開く
+      logseq.App.pushState('page', { name: goPageName }) // ページを開く
+    }
+  } else {
+    console.log(`Creating page: ${goPageName}`)
+    await logseq.Editor.createPage(goPageName, { public: false }, { redirect: true, createFirstBlock: true, journal: false })
+    setTimeout(() => {
+      const runButton = parent.document.getElementById(keyRunButton) as HTMLElement | null
+      if (runButton)
+        runButton.click()
+    }, 300)
+  }
+  logseq.UI.showMsg(`${goPageName}`, "info", { timeout: 2200 })
+}
+
+
+// MDモデルかどうかのチェック DBモデルはfalse
+const checkLogseqVersion = async (): Promise<boolean> => {
+  const logseqInfo = (await logseq.App.getInfo("version")) as AppInfo | any
+  //  0.11.0もしくは0.11.0-alpha+nightly.20250427のような形式なので、先頭の3つの数値(1桁、2桁、2桁)を正規表現で取得する
+  const version = logseqInfo.match(/(\d+)\.(\d+)\.(\d+)/)
+  if (version) {
+    logseqVersion = version[0] //バージョンを取得
+    // console.log("logseq version: ", logseqVersion)
+
+    // もし バージョンが0.10.*系やそれ以下ならば、logseqVersionMdをtrueにする
+    if (logseqVersion.match(/0\.([0-9]|10)\.\d+/)) {
+      logseqVersionMd = true
+      // console.log("logseq version is 0.10.* or lower")
+      return true
+    } else logseqVersionMd = false
+  } else logseqVersion = "0.0.0"
+  return false
+}
+
+
+// DBグラフかどうかのチェック
+const checkLogseqDbGraph = async (): Promise<boolean> => await (logseq.App as any).checkCurrentIsDbGraph() as boolean | false || false
+
+const deleteAllBlocks = async () => {
+  const blocks = await logseq.Editor.getPageBlocksTree(mainPageTitle) as { uuid: BlockEntity["uuid"] }[]
+  if (blocks)
+    // 全てのブロックを削除
+    for (const block of blocks)
+      await logseq.Editor.removeBlock(block.uuid)
+}

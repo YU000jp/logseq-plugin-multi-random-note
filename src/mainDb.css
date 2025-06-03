@@ -1,0 +1,292 @@
+ #left-sidebar li[title="Multi-Random-Note-Plugin" i] {
+       display: none;
+ }
+
+ body[data-page="Multi-Random-Note-Plugin" i] {
+
+       & #main-content-container div.page {
+
+             & #mrn--pagebar>button {
+                   margin-left: 10px;
+                   font-size: 20px;
+                   color: var(--lx-accent-11, var(--ls-link-text-color, hsl(var(--primary)/.8)))
+             }
+
+             &>div:not(.relative) {
+                   display: none;
+             }
+
+             & h1.page-title {
+                   cursor: default;
+                   pointer-events: none;
+
+                   &::after {
+                         text-decoration: underline;
+                         margin-right: 0.5em;
+                         font-size: small;
+                         width: 10em;
+                   }
+             }
+
+
+
+             & div.ls-page-blocks>div>div.page-blocks-inner>div>div>div.content>div.blocks-container>div.blocks-list-wrap[data-level="0"]>div.ls-block[level="0"] {
+                   overscroll-behavior-y: contain;
+                   outline: 2px solid var(--ls-border-color);
+                   outline-offset: 1px;
+                   overflow: auto;
+                   background-color: var(--ls-primary-background-color);
+
+                   &>div.block-children-container>div.block-children>div.blocks-list-wrap[data-level="1"]>div.ls-block[level="1"]>div.block-main-container>div.block-control-wrap {
+                         display: none;
+                   }
+
+                   &:is(:focus-within, :hover) {
+                         box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
+                   }
+
+                   & div.ls-block[data-refs-self*='".thisweek"'] {
+                         position: unset !important;
+                   }
+
+                   &>div.block-main-container>div.block-control-wrap+div>div.block-main-content {
+                         width: 100%;
+
+                         &>div>div>div>div>div.block-content-wrapper {
+                               pointer-events: none;
+
+                               &>div.block-content-inner>div>div>span {
+                                     &>div:is(.embed-page, .dsl-query) {
+                                           width: fit-content;
+                                           min-width: 100%;
+                                           min-height: 300px;
+                                           pointer-events: all;
+                                           background-color: var(--ls-secondary-background-color);
+
+                                           &:not(:has(>section+div.blocks-container)) {
+                                                 background: repeating-linear-gradient(45deg, var(--ls-secondary-background-color), transparent 100px);
+                                           }
+
+                                           &>section.embed-header {
+                                                 position: sticky;
+                                                 top: 0;
+                                                 background-color: var(--ls-tertiary-background-color);
+                                                 z-index: 1;
+                                                 width: fit-content;
+                                                 font-size: 1.1em;
+                                           }
+
+                                           &>div.blocks-container {
+                                                 font-size: .94em;
+                                           }
+
+                                     }
+
+                                     &>div.dsl-query>div>div>div>div.custom-query {
+                                           opacity: 0.9;
+                                           font-size: 0.8em;
+                                           overflow: auto;
+                                           width: max-content;
+                                           pointer-events: all;
+
+                                           &>div.th {
+                                                 display: none;
+                                           }
+
+                                           &>div.cp__query-builder {
+                                                 user-select: none;
+                                                 pointer-events: none;
+
+                                                 &>div.cp__query-builder-filter>div.ui__dropdown-trigger {
+                                                       display: none;
+                                                 }
+                                           }
+                                     }
+                               }
+                         }
+                   }
+             }
+       }
+
+       /* Expansion */
+       &.mrn-Expansion>div#root>div>main div#main-content-container div.page h1.page-title::after {
+             content: "Expansion";
+       }
+
+       /* Wide */
+       &.mrn-Wide>div#root>div>main div#main-content-container {
+
+             /* ページコンテンツ幅を最大化 */
+             &>div.cp__sidebar-main-content {
+                   max-width: 90vw;
+                   height: 90vh;
+                   /* ここでoverflowは使ってはいけない。横スクロールされなくなる */
+             }
+
+             & div.page {
+
+                   & div.ls-page-blocks>div>div.page-blocks-inner>div>div>div.content>div.blocks-container>div.blocks-list-wrap[data-level="0"]>div.ls-block[level="0"]>div.block-children-container>div.block-children>div[data-level="1"].blocks-list-wrap {
+                         display: flex;
+                         margin-right: 5vw;
+                         min-height: 60vh;
+                         max-height: 86vh;
+
+                         &>div.ls-block[level="1"] {
+                               min-width: 500px;
+                               max-width: 900px;
+                               flex: 1;
+
+                               &:not(:focus-within, :hover) {
+                                     opacity: 0.8;
+                               }
+
+                               &:is(:focus-within, :hover) {
+                                     min-width: 900px;
+                                     opacity: 1;
+                               }
+
+                               &:not(:has(div.embed-page>div.blocks-container)) {
+                                     overflow: hidden;
+                                     white-space: nowrap;
+                                     text-overflow: ellipsis;
+                                     min-width: fit-content;
+                               }
+                         }
+                   }
+
+                   & h1.page-title {
+                         color: chocolate;
+                         /* 動作確認用 */
+
+                         &::after {
+                               content: "Wide";
+                         }
+                   }
+             }
+       }
+
+       /* Gallery */
+       &.mrn-Gallery>div#root>div>main div#main-content-container {
+
+             /* ページコンテンツ幅を最大化 */
+             &>div.cp__sidebar-main-content {
+                   max-width: 90vw;
+                   height: 90vh;
+             }
+
+             & div.page {
+
+                   & div.ls-page-blocks>div>div.page-blocks-inner>div>div>div.content>div.blocks-container>div.blocks-list-wrap[data-level="0"]>div.ls-block[level="0"]>div.block-children-container>div.block-children>div[data-level="1"].blocks-list-wrap {
+                         display: grid;
+                         grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+                         margin-right: 5vw;
+                         max-height: 80vh;
+
+                         &>div.ls-block[level="1"] {
+                               width: 500px;
+                               flex: 1;
+                               height: 40vh;
+                               overflow: scroll;
+
+                               &:not(:focus-within, :hover) {
+                                     opacity: 0.8;
+                               }
+
+                               &:is(:focus-within, :hover) {
+                                     width: 800px;
+                                     height: 50vh;
+                                     margin-bottom: -10vh;
+                                     position: relative;
+                                     z-index: 2;
+                                     opacity: 1;
+                               }
+
+                               /* 縦の長さを合わせる場合 */
+                               &>div.block-main-container {
+                                     height: 100%;
+
+                                     &>div.block-content-wrapper>div.flex {
+                                           height: 100%;
+
+                                           &>div>div.block-content>div.block-content-inner>div>span>div.embed-page {
+                                                 height: 100%;
+                                           }
+                                     }
+                               }
+                         }
+                   }
+
+                   & h1.page-title {
+                         color: yellowgreen;
+                         /* 動作確認用 */
+
+                         &::after {
+                               content: "Gallery";
+                         }
+                   }
+             }
+       }
+
+       /* Tile */
+       &.mrn-Tile>div#root>div>main div#main-content-container {
+
+             /* ページコンテンツ幅を最大化 */
+             &>div.cp__sidebar-main-content {
+                   max-width: 90vw;
+                   height: 90vh;
+             }
+
+             & div.page {
+
+                   & div.ls-page-blocks>div>div.page-blocks-inner>div>div>div.content>div.blocks-container>div.blocks-list-wrap[data-level="0"]>div.ls-block[level="0"]>div.block-children-container>div.block-children>div[data-level="1"].blocks-list-wrap {
+                         display: grid;
+                         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                         margin-right: 2vw;
+                         max-height: 90vh;
+
+                         &>div.ls-block[level="1"] {
+                               width: 250px;
+                               flex: 1;
+                               height: 300px;
+                               overflow: auto;
+
+                               &:not(:focus-within, :hover) {
+                                     font-size: 0.8em;
+                                     opacity: 0.8;
+                               }
+
+                               &:is(:focus-within, :hover) {
+                                     width: 400px;
+                                     height: 450px;
+                                     margin-bottom: -10vh;
+                                     position: relative;
+                                     z-index: 2;
+                                     opacity: 1;
+                               }
+
+                               /* 縦の長さを合わせる場合 */
+                               &>div.block-main-container {
+                                     height: 100%;
+
+                                     &>div.block-content-wrapper>div.flex {
+                                           height: 100%;
+
+                                           &>div>div.block-content>div.block-content-inner>div>span>div.embed-page {
+                                                 height: 100%;
+                                           }
+                                     }
+                               }
+                         }
+                   }
+
+                   & h1.page-title {
+                         color: lightseagreen;
+                         /* 動作確認用 */
+
+                         &::after {
+                               content: "Tile";
+                         }
+                   }
+             }
+       }
+ }
