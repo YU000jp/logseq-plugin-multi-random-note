@@ -240,9 +240,9 @@ const main = async () => {
 const pageMenuClickAddToExclusionList = async () => {
   {
     // logseq.settings!.excludesPagesは空か、複数行でページ名が記入されていて、そこに重複しなければページ名を追加する
-    const currentPageEntity = await logseq.Editor.getCurrentPage() as { originalName: PageEntity["originalName"] } | null
+    const currentPageEntity = await logseq.Editor.getCurrentPage() as { originalName?: PageEntity["originalName"], title?: string } | null
     if (currentPageEntity) {
-      const pageName = currentPageEntity.originalName
+      const pageName = currentPageEntity.originalName! || currentPageEntity.title!
       const excludesPages = logseq.settings!.excludesPages as string
       if (excludesPages === "") {
         logseq.updateSettings({ excludesPages: pageName })
@@ -292,14 +292,21 @@ const updateMainContent = async (type: "page" | "assets", logseqVersionMd: boole
 
   // メインページの最初のブロックを作成
   if (logseqDbGraph === true) {
-    const newBlockEntity = await logseq.Editor.appendBlockInPage(mainPageTitle, "") as { uuid: BlockEntity["uuid"] } | null
-    if (newBlockEntity)
-      if (type === "page")
-        await generateEmbed(newBlockEntity.uuid, logseqVersionMd)
-      else
-        if (type === "assets")
-          await generateEmbedForAssets(newBlockEntity.uuid, logseqVersionMd)
+    // DB model & DB graph
+    // TODO: block操作がエラーになる 「 Uncaught (in promise) RangeError: Maximum call stack size exceeded 」 「 RangeError: Maximum call stack size exceeded 」
+    // const newBlockEntity = await logseq.Editor.insertBlock(mainPageTitle, "") as { uuid: BlockEntity["uuid"] } | null
+    // // 100ms待機
+    // await new Promise(resolve => setTimeout(resolve, 100))
+    // if (newBlockEntity)
+    //   if (type === "page")
+    //     await generateEmbed(newBlockEntity.uuid, logseqVersionMd)
+    //   else
+    //     if (type === "assets")
+    //       await generateEmbedForAssets(newBlockEntity.uuid, logseqVersionMd)
+    logseq.UI.showMsg("DB graph is not supported yet ('Multi Random Note' plugin)", "warning", { timeout: 3000 })
   } else {
+    // file-based model
+    // DB model & file-based graph
     const newBlockEntity = await logseq.Editor.appendBlockInPage(mainPageTitle, "") as { uuid: BlockEntity["uuid"] } | null
     if (newBlockEntity)
       if (type === "page")
@@ -319,7 +326,7 @@ export const loadOrInitializePage = async (goPageName: string, logseqDbGraph: bo
   const page = await getUuidFromPageName(goPageName, logseqVersionMd) as BlockEntity["uuid"] | null
   if (page) {
     if (logseqDbGraph === true) {
-      console.log(`DB Graph mode detected. Opening page: ${goPageName}`)
+      // console.log(`DB Graph mode detected. Opening page: ${goPageName}`)
       // DBグラフの場合は、ページを開く
       logseq.App.replaceState('page', { name: goPageName })
     } else {
