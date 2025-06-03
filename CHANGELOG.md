@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/YU000jp/logseq-plugin-multi-random-note/compare/v1.1.2...v1.2.0) (2025-06-03)
+
+
+### Features
+
+* Compatibility for file-based graph [DB model] [#6](https://github.com/YU000jp/logseq-plugin-multi-random-note/issues/6) ([d7068e0](https://github.com/YU000jp/logseq-plugin-multi-random-note/commit/d7068e0070620d317e2c42a5cec09fa3c80386dc))
+
 ## [1.1.2](https://github.com/YU000jp/logseq-plugin-multi-random-note/compare/v1.1.1...v1.1.2) (2025-01-02)
 
 
