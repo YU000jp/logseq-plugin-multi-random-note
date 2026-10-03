@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/YU000jp/logseq-plugin-multi-random-note/compare/v1.2.0...v1.2.1) (2026-10-03)
+
+
+### Bug Fixes
+
+* DBグラフ判定を公式APIに置き換え、グラフ種別とアプリ世代を分離 ([0d7b5f4](https://github.com/YU000jp/logseq-plugin-multi-random-note/commit/0d7b5f4417526fbf40c0c7215c7749cd6969d7e7))
+
 # [1.2.0](https://github.com/YU000jp/logseq-plugin-multi-random-note/compare/v1.1.2...v1.2.0) (2025-06-03)
 
 
